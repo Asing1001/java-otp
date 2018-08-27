@@ -2,7 +2,7 @@ package com.odde.securetoken;
 
 import java.util.Random;
 
-public class RsaTokenDao {
+public class RsaTokenDao implements Token {
     public String getRandom(String account) {
         Random seed = new Random((int) System.currentTimeMillis() & 0x0000FFFF);
         String result = String.format("%06d", seed.nextInt(999999));
