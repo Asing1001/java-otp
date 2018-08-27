@@ -4,16 +4,19 @@ public class AuthenticationService {
 
     private Profile profileDao;
     private Token rsaToken;
+    private AuthLogger logger;
 
     public AuthenticationService(){
         this.profileDao = new ProfileDao();
         this.rsaToken = new RsaTokenDao();
+        this.logger = new AuthLogger();
     }
 
 
-    public AuthenticationService(Profile profile, Token token){
+    public AuthenticationService(Profile profile, Token token, AuthLogger logger){
         this.profileDao = profile;
         this.rsaToken = token;
+        this.logger = logger;
     }
 
     public boolean isValid(String account, String password) {
@@ -30,6 +33,7 @@ public class AuthenticationService {
         if (isValid) {
             return true;
         } else {
+            logger.save(String.format("%s login failed", account));
             return false;
         }
     }
