@@ -8,9 +8,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 public class AuthenticationServiceTest {
@@ -41,6 +39,19 @@ public class AuthenticationServiceTest {
         givenRandomToken("000000");
         target.isValid("joey", "not valid passcode");
         shouldLog("joey", "fail");
+    }
+
+
+    @Test
+    public void log_should_be_called() {
+        givenAccountPassword("joey", "91");
+        givenRandomToken("000000");
+        target.isValid("joey", "91000000");
+        shouldNotLog();
+    }
+
+    private void shouldNotLog() {
+        verify(mockAuthLogger, never()).save(any());
     }
 
     private void shouldLog(String... messages) {
